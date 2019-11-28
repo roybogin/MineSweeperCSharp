@@ -23,12 +23,12 @@ namespace MineSweeper
             flagged = false;
         }
 
-        private List<Panel> getAround()
+        private List<Panel> getAround() //get the panels around the given panel
         {
             List<Panel> list = new List<Panel>();
             int row = int.Parse(label.Name.Substring(0, label.Name.IndexOf('-')));
             int col = int.Parse(label.Name.Substring(label.Name.IndexOf('-') + 1));
-            if (row != 0)
+            if (row != 0)   //if the panel isn't on the first row (has a row above it)
             {
                 if (col != 0)
                     list.Add(Form1.grid[row - 1, col - 1]);
@@ -47,7 +47,7 @@ namespace MineSweeper
             if (col != Form1.COLS - 1)
                 list.Add(Form1.grid[row, col + 1]);
 
-            if (row != Form1.ROWS-1)
+            if (row != Form1.ROWS-1) //if the panel isn't on the last row (has a row below it)
             {
                 if (col != 0)
                     list.Add(Form1.grid[row + 1, col - 1]);
@@ -76,7 +76,7 @@ namespace MineSweeper
                 hasBomb = true;
         }
 
-        public int BombsAround()
+        public int BombsAround()    //count number of bombs around the panel
         {
             int bombCount = 0;
             List<Panel> list = getAround();
@@ -94,14 +94,14 @@ namespace MineSweeper
         {
             int bombCount = BombsAround();
             viewed = true;
-            if (bombCount != 0)
+            if (bombCount != 0) //show the number of bombs near the panel
             {
                 label.Text = bombCount.ToString();
                 label.BackColor = Form1.colors[bombCount - 1];
                 Form1.unviewed--;     
             }
             else
-            {
+            {   //if there are no bombs around the panel, uncover the panel around this one recursively
                 label.Text = "";
                 Form1.unviewed--;
                 List<Panel> list = getAround();
@@ -116,22 +116,22 @@ namespace MineSweeper
 
         public void LeftClick()
         {
-            if (!viewed && !flagged)
+            if (!viewed && !flagged)    //work if not viewed or flagged
             {
                 viewed = true;
-                if (hasBomb)
+                if (hasBomb)    //fail if the panel has a bomb
                 {
                     label.Text = "X";
                     label.ForeColor = Color.Red;
                 }
                 else
                 {
-                    this.ShowSquare();
+                    this.ShowSquare();  //show the panel's value
                 }
             }
         }
 
-        public void RightClick()
+        public void RightClick()    //toggle flag
         {
             if (!viewed)
             {
